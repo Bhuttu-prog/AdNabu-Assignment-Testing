@@ -1,0 +1,43 @@
+AdNabuTestStore – Test Cases (Product Search & Add to Cart)
+============================================================
+Store: password-protected (AdNabuQA). After login, home shows product listings; some products are sold out (card shows "Sold out" or sold-out class). Search via header or /search?q=<term>. Add to cart opens cart drawer or updates cart count.
+
+A) PRODUCT SEARCH
+
+TC-1 [Positive] Search using an in-stock product from home
+  Steps: On home after login, pick a product that is not sold out. Use its name or handle in search; submit.
+  Expected:
+  • Search results page loads; at least one result matches (the in-stock product or related).
+  • Opening the result shows product page with "Add to cart" available.
+
+TC-2 [Negative] Invalid product search
+  Steps: Enter a non-existent product name or random text (e.g. "xyznonexistent123") and submit.
+  Expected:
+  • Search completes without crash; "No results" or empty state shown.
+  • No unrelated products falsely displayed as matches.
+
+TC-3 [Edge] Empty search
+  Steps: Submit search with no input (empty string) or only spaces.
+  Expected:
+  • Search is disabled / not triggered, or a clear empty-state / validation message is shown.
+  • No unexpected error or broken page.
+
+
+B) ADD TO CART
+
+TC-4 [Positive] Add one in-stock product to cart
+  Steps: Pick an in-stock product from home; search for it, open product page. Select variant if required. Quantity 1, click "Add to cart".
+  Expected:
+  • Success feedback (e.g. "Added to cart" or cart drawer/icon update).
+  • Cart count increases by 1; product in cart with correct title, price, quantity.
+
+TC-5 [Negative] Add to cart when product is out of stock
+  Steps: Open a product that is out of stock and attempt to add to cart if the button is visible.
+  Expected:
+  • "Add to cart" is disabled or hidden, or an error message indicates unavailable; cart unchanged.
+
+TC-6 [Edge] Add same product to cart multiple times (quantity)
+  Steps: Add a product to cart, then increase quantity (e.g. to 2 or 3) and update/add again.
+  Expected:
+  • Cart shows correct total quantity and line total (price × quantity).
+  • No duplicate line entries for the same variant unless design allows it; totals correct.
