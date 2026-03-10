@@ -1,4 +1,7 @@
+import os
 import time
+from datetime import datetime
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -13,6 +16,19 @@ SEARCH_QUERY = "shirt"
 WAIT_TIMEOUT = 15
 VIEW_DELAY_SECONDS = 8
 SEARCH_VIEW_DELAY_SECONDS = 5
+REPORT_DIR = "reports"
+STEPS = [
+    "Navigate to store",
+    "Enter store password",
+    "Wait for store loaded",
+    "Get in-stock product search term",
+    "Search product",
+    "Wait for search results",
+    "Open first product",
+    "Wait for product page",
+    "Add to cart",
+    "Wait for cart updated",
+]
 
 
 def create_driver():
@@ -237,6 +253,8 @@ def wait_for_cart_updated(driver, wait):
 def run_scenario():
     driver = create_driver()
     wait = WebDriverWait(driver, WAIT_TIMEOUT)
+    start = time.time()
+    search_term = None
     try:
         driver.get(STORE_URL)
         enter_store_password(driver, wait)
@@ -250,11 +268,35 @@ def run_scenario():
         add_to_cart(driver, wait)
         wait_for_cart_updated(driver, wait)
         time.sleep(VIEW_DELAY_SECONDS)
-        return True
+        return True, time.time() - start, None, search_term
+    except Exception as e:
+        return False, time.time() - start, str(e), search_term
     finally:
         driver.quit()
 
 
 if __name__ == "__main__":
-    success = run_scenario()
+    success, duration, error_msg, search_term = run_scenario()
+    os.makedirs(REPORT_DIR, exist_ok=True)
+    ts = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    report_path = os.path.join(REPORT_DIR, f"automation_report_{ts}.txt")
+    status = "PASS" if success else "FAIL"
+    lines = [
+        "Automation Test Report",
+        "=" * 40,
+        f"Run: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
+        "Scenario: Search and Add to Cart",
+        f"Status: {status}",
+        f"Duration: {duration:.2f} seconds",
+        f"Search term used: {search_term or 'N/A'}",
+        "",
+        "Steps:",
+    ]
+    for i, step in enumerate(STEPS, 1):
+        lines.append(f"  {i}. {step}")
+    if error_msg:
+        lines.extend(["", "Error:", error_msg])
+    with open(report_path, "w") as f:
+        f.write("\n".join(lines))
+    print(f"Report: {report_path}")
     exit(0 if success else 1)

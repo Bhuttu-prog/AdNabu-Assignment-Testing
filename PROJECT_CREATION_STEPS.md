@@ -12,6 +12,7 @@
 | 6 | **Editor** | Create and edit `README.md` in your editor. |
 | 7 | **Terminal** | Run the git commands in a terminal (optional). |
 | 8 | **Terminal** | Run `./run_automation.sh` or the Python command in a terminal. |
+| 9 | **Automatic** | Test reports are generated when you run the automation; see the `reports/` folder. |
 
 ---
 
@@ -163,3 +164,13 @@ git commit -m "Initial project"
 
 - Run: `./run_automation.sh` (or activate venv and run `python search_and_add_to_cart.py`).
 - Confirm browser opens, store loads, password is entered, an in-stock product is found, search runs, first result opens, add to cart works, and script exits with code 0.
+- The script prints the report path and writes a timestamped report into `reports/`.
+
+## 9. Test reports
+
+**Generated automatically** when you run the automation (no extra step).
+
+- **Location:** `reports/` in the project folder.
+- **Filename:** `automation_report_YYYY-MM-DD_HH-MM-SS.txt` (one file per run).
+- **Contents:** Run time, scenario name, status (PASS/FAIL), duration in seconds, search term used, list of steps executed, and error message if the run failed.
+- To include reports in version control, add and commit the `reports/` folder after a run.

@@ -1,0 +1,19 @@
+Automation Test Report
+========================================
+Run: 2026-03-11 00:02:27
+Scenario: Search and Add to Cart
+Status: PASS
+Duration: 18.13 seconds
+Search term used: selling plans ski wax
+
+Steps:
+  1. Navigate to store
+  2. Enter store password
+  3. Wait for store loaded
+  4. Get in-stock product search term
+  5. Search product
+  6. Wait for search results
+  7. Open first product
+  8. Wait for product page
+  9. Add to cart
+  10. Wait for cart updated

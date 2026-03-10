@@ -30,3 +30,5 @@ python search_and_add_to_cart.py
 ```
 
 **Dependencies:** Listed in `requirements.txt` (selenium, webdriver-manager). Chrome must be installed.
+
+**Test reports:** Each run writes a report to `reports/automation_report_YYYY-MM-DD_HH-MM-SS.txt` with status (PASS/FAIL), duration, search term, steps, and error details if failed. The script prints the report path when it finishes.
